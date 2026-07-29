@@ -113,13 +113,28 @@
                         }
                     } else if (line.startsWith('CC++++.log')) {
                         let m = line.match(/CC++++\.log\(["']([^"']*)["']\)/);
-                        if (m) out('log', interp(m[1]));
+                        if (m) {
+                            let msg = interp(m[1]);
+                            out('log', msg);
+                        } else {
+                            let m2 = line.match(/CC++++\.log\((.+)\)/);
+                            if (m2) {
+                                let msg = interp(m2[1].trim());
+                                out('log', msg);
+                            }
+                        }
                     } else if (line.startsWith('CC++++.warn')) {
                         let m = line.match(/CC++++\.warn\(["']([^"']*)["']\)/);
-                        if (m) out('warn', interp(m[1]));
+                        if (m) {
+                            let msg = interp(m[1]);
+                            out('warn', msg);
+                        }
                     } else if (line.startsWith('CC++++.error')) {
                         let m = line.match(/CC++++\.error\(["']([^"']*)["']\)/);
-                        if (m) out('error', interp(m[1]));
+                        if (m) {
+                            let msg = interp(m[1]);
+                            out('error', msg);
+                        }
                     } else {
                         out('error', 'unknown: ' + line.slice(0, 40));
                     }
