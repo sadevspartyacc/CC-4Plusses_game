@@ -114,26 +114,59 @@
                     } else if (line.startsWith('CC++++.log')) {
                         let m = line.match(/CC++++\.log\(["']([^"']*)["']\)/);
                         if (m) {
-                            let msg = interp(m[1]);
-                            out('log', msg);
+                            out('log', interp(m[1]));
                         } else {
-                            let m2 = line.match(/CC++++\.log\((.+)\)/);
+                            let m2 = line.match(/CC++++\.log\((.*)\)/);
                             if (m2) {
-                                let msg = interp(m2[1].trim());
-                                out('log', msg);
+                                let arg = m2[1].trim();
+                                if (arg.startsWith('"') && arg.endsWith('"')) {
+                                    out('log', interp(arg.slice(1, -1)));
+                                } else {
+                                    if (V[arg] !== undefined) {
+                                        out('log', V[arg]);
+                                    } else {
+                                        out('log', arg);
+                                    }
+                                }
                             }
                         }
                     } else if (line.startsWith('CC++++.warn')) {
                         let m = line.match(/CC++++\.warn\(["']([^"']*)["']\)/);
                         if (m) {
-                            let msg = interp(m[1]);
-                            out('warn', msg);
+                            out('warn', interp(m[1]));
+                        } else {
+                            let m2 = line.match(/CC++++\.warn\((.*)\)/);
+                            if (m2) {
+                                let arg = m2[1].trim();
+                                if (arg.startsWith('"') && arg.endsWith('"')) {
+                                    out('warn', interp(arg.slice(1, -1)));
+                                } else {
+                                    if (V[arg] !== undefined) {
+                                        out('warn', V[arg]);
+                                    } else {
+                                        out('warn', arg);
+                                    }
+                                }
+                            }
                         }
                     } else if (line.startsWith('CC++++.error')) {
                         let m = line.match(/CC++++\.error\(["']([^"']*)["']\)/);
                         if (m) {
-                            let msg = interp(m[1]);
-                            out('error', msg);
+                            out('error', interp(m[1]));
+                        } else {
+                            let m2 = line.match(/CC++++\.error\((.*)\)/);
+                            if (m2) {
+                                let arg = m2[1].trim();
+                                if (arg.startsWith('"') && arg.endsWith('"')) {
+                                    out('error', interp(arg.slice(1, -1)));
+                                } else {
+                                    if (V[arg] !== undefined) {
+                                        out('error', V[arg]);
+                                    } else {
+                                        out('error', arg);
+                                    }
+                                }
+                            }
                         }
                     } else {
                         out('error', 'unknown: ' + line.slice(0, 40));
